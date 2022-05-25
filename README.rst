@@ -18,9 +18,6 @@ Requirements
 Install
 -------
 
-The recommended way to use the AlibabaCloud DKMS SDK for Java in your
-project is to consume it from Maven. Import as follows:
-
 ::
 
    pip install alibabacloud-dkms-gcs-python2
