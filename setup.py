@@ -19,15 +19,15 @@ AUTHOR_EMAIL = "sdk-team@alibabacloud.com"
 URL = "https://github.com/aliyun/alibabacloud-dkms-gcs-python2-sdk"
 VERSION = "0.0.2"
 REQUIRES = [
-    "protobuf>=3.12.0",
+    "protobuf>=3.12.0,<=3.17.0",
     "alibabacloud_tea_util_py2>=0.0.1",
     'pyopenssl>=16.2.0,<=21.0.0',
     'cryptography<=3.3.2'
 ]
 
 LONG_DESCRIPTION = ''
-if os.path.exists('./README.md'):
-    with open("README.md", encoding='utf-8') as fp:
+if os.path.exists('./README.rst'):
+    with open("README.rst") as fp:
         LONG_DESCRIPTION = fp.read()
 
 setup(
@@ -35,7 +35,6 @@ setup(
     version=VERSION,
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    long_description_content_type='text/markdown',
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
     license="Apache License 2.0",
