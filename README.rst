@@ -1,4 +1,4 @@
-English \| `简体中文 <README-CN.md>`__
+English \| `简体中文 <README-CN.rst>`__
 
 |image0|
 
