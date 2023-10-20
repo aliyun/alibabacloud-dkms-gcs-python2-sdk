@@ -1,5 +1,7 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
+from __future__ import unicode_literals
+
 import time
 
 from Tea.exceptions import TeaException, UnretryableException
@@ -9,29 +11,31 @@ from Tea.core import TeaCore
 from openapi_credential.client import Client as DedicatedKmsOpenapiCredentialClient
 from alibabacloud_tea_util.client import Client as UtilClient
 from openapi_credential import models as dedicated_kms_openapi_credential_models
-from openapi.models import ResponseEntity
 from openapi_util.client import Client as DedicatedKmsOpenapiUtilClient
+from alibabacloud_darabonba_string.client import Client as StringClient
+from alibabacloud_openapi_util.client import Client as OpenApiUtilClient
+from alibabacloud_darabonba_map.client import Client as MapClient
+from alibabacloud_darabonba_array.client import Client as ArrayClient
 
 
 class Client(object):
-    _endpoint = None
-    _region_id = None
-    _protocol = None
-    _read_timeout = None
-    _connect_timeout = None
-    _http_proxy = None
-    _https_proxy = None
-    _no_proxy = None
-    _user_agent = None
-    _socks_5proxy = None
-    _socks_5net_work = None
-    _max_idle_conns = None
-    _credential = None
+    _endpoint = None  # type: str
+    _region_id = None  # type: str
+    _protocol = None  # type: str
+    _read_timeout = None  # type: int
+    _connect_timeout = None  # type: int
+    _http_proxy = None  # type: str
+    _https_proxy = None  # type: str
+    _no_proxy = None  # type: str
+    _user_agent = None  # type: str
+    _socks_5proxy = None  # type: str
+    _socks_5net_work = None  # type: str
+    _max_idle_conns = None  # type: int
+    _credential = None  # type: DedicatedKmsOpenapiCredentialClient
+    _ca_file_path = None  # type: str
+    _ignore_ssl = None  # type: bool
 
-    def __init__(
-            self,
-            config,
-    ):
+    def __init__(self, config):
         if UtilClient.is_unset(config):
             raise TeaException({
                 'name': 'ParameterMissing',
@@ -68,6 +72,8 @@ class Client(object):
             self._credential = DedicatedKmsOpenapiCredentialClient(credential_config)
         elif not UtilClient.is_unset(config.credential):
             self._credential = config.credential
+        if not UtilClient.is_unset(config.ca_file_path):
+            self._ca_file_path = config.ca_file_path
         self._endpoint = config.endpoint
         self._protocol = config.protocol
         self._region_id = config.region_id
@@ -80,18 +86,9 @@ class Client(object):
         self._socks_5proxy = config.socks_5proxy
         self._socks_5net_work = config.socks_5net_work
         self._max_idle_conns = config.max_idle_conns
+        self._ignore_ssl = config.ignore_ssl
 
-    def do_request(
-            self,
-            api_name,
-            api_version,
-            protocol,
-            method,
-            signature_method,
-            req_body_bytes,
-            runtime,
-            request_headers,
-    ):
+    def do_request(self, api_name, api_version, protocol, method, signature_method, req_body_bytes, runtime, request_headers):
         runtime.validate()
         _runtime = {
             'timeouted': 'retry',
@@ -104,15 +101,15 @@ class Client(object):
             'socks5NetWork': UtilClient.default_string(runtime.socks_5net_work, self._socks_5net_work),
             'maxIdleConns': UtilClient.default_number(runtime.max_idle_conns, self._max_idle_conns),
             'retry': {
-                'retryable': runtime.autoretry,
+                'retryable': DedicatedKmsOpenapiUtilClient.default_boolean(runtime.autoretry, True),
                 'maxAttempts': UtilClient.default_number(runtime.max_attempts, 3)
             },
             'backoff': {
-                'policy': UtilClient.default_string(runtime.backoff_policy, 'no'),
+                'policy': UtilClient.default_string(runtime.backoff_policy, 'yes'),
                 'period': UtilClient.default_number(runtime.backoff_period, 1)
             },
-            'ignoreSSL': runtime.ignore_ssl,
-            'ca': runtime.verify
+            'ignoreSSL': DedicatedKmsOpenapiUtilClient.default_boolean(self._ignore_ssl, runtime.ignore_ssl),
+            'ca': UtilClient.default_string(self._ca_file_path, runtime.verify)
         }
         _last_request = None
         _last_exception = None
@@ -129,32 +126,27 @@ class Client(object):
                 _request.protocol = UtilClient.default_string(self._protocol, protocol)
                 _request.method = method
                 _request.pathname = '/'
-                _request.headers = {
-                    'accept': 'application/x-protobuf',
-                    'host': DedicatedKmsOpenapiUtilClient.get_host(self._region_id, self._endpoint),
-                    'date': UtilClient.get_date_utcstring(),
-                    'user-agent': UtilClient.get_user_agent(self._user_agent),
-                    'x-kms-apiversion': api_version,
-                    'x-kms-apiname': api_name,
-                    'x-kms-signaturemethod': signature_method,
-                    'x-kms-acccesskeyid': self._credential.get_access_key_id()
-                }
-                if not request_headers:
-                    request_headers = {}
-                request_headers.update(_request.headers)
-                _request.headers = request_headers
+                _request.headers = TeaCore.merge(request_headers)
+                _request.headers['accept'] = 'application/x-protobuf'
+                _request.headers['host'] = self._endpoint
+                _request.headers['date'] = UtilClient.get_date_utcstring()
+                _request.headers['user-agent'] = UtilClient.get_user_agent(self._user_agent)
+                _request.headers['x-kms-apiversion'] = api_version
+                _request.headers['x-kms-apiname'] = api_name
+                _request.headers['x-kms-signaturemethod'] = signature_method
+                _request.headers['x-kms-acccesskeyid'] = self._credential.get_access_key_id()
                 _request.headers['content-type'] = 'application/x-protobuf'
                 _request.headers['content-length'] = DedicatedKmsOpenapiUtilClient.get_content_length(req_body_bytes)
-                _request.headers['content-sha256'] = DedicatedKmsOpenapiUtilClient.get_content_sha256(req_body_bytes)
+                _request.headers['content-sha256'] = StringClient.to_upper(OpenApiUtilClient.hex_encode(OpenApiUtilClient.hash(req_body_bytes, 'ACS3-RSA-SHA256')))
                 _request.body = req_body_bytes
-                str_to_sign = DedicatedKmsOpenapiUtilClient.get_string_to_sign(_request)
+                str_to_sign = DedicatedKmsOpenapiUtilClient.get_string_to_sign(method, _request.pathname, _request.headers, _request.query)
                 _request.headers['authorization'] = self._credential.get_signature(str_to_sign)
                 _last_request = _request
                 _response = TeaCore.do_action(_request, _runtime)
                 body_bytes = None
                 if UtilClient.is_4xx(_response.status_code) or UtilClient.is_5xx(_response.status_code):
                     body_bytes = UtilClient.read_as_bytes(_response.body)
-                    resp_map = DedicatedKmsOpenapiUtilClient.get_err_message(body_bytes)
+                    resp_map = UtilClient.assert_as_map(DedicatedKmsOpenapiUtilClient.get_err_message(body_bytes))
                     raise TeaException({
                         'code': resp_map.get('Code'),
                         'message': resp_map.get('Message'),
@@ -165,16 +157,25 @@ class Client(object):
                         }
                     })
                 body_bytes = UtilClient.read_as_bytes(_response.body)
-                response_headers = None
-                if runtime.response_headers:
-                    response_headers = {}
-                    for response_header in runtime.response_headers:
-                        response_headers[response_header] = _response.headers.get(response_header)
-                resp_entity = ResponseEntity(body_bytes, response_headers)
-                return resp_entity
+                response_headers = {}
+                headers = _response.headers
+                if not UtilClient.is_unset(runtime.response_headers):
+                    for key in MapClient.key_set(headers):
+                        if ArrayClient.contains(runtime.response_headers, key):
+                            response_headers[key] = headers.get(key)
+                return {
+                    'bodyBytes': body_bytes,
+                    'responseHeaders': response_headers
+                }
             except Exception as e:
-                if TeaCore.is_retryable(e):
+                import traceback, datetime
+                timestamp = "timestamp:{},".format(datetime.datetime.now())
+                retry_times = " retry times:{},".format(_retry_times)
+                print(timestamp + retry_times + traceback.format_exc())
+                if TeaCore.is_retryable(e) or DedicatedKmsOpenapiUtilClient.is_retry_err(e):
+                    print(timestamp + retry_times + " continue")
                     _last_exception = e
                     continue
+                print(timestamp + retry_times + "no continue")
                 raise e
         raise UnretryableException(_last_request, _last_exception)
