@@ -1,41 +1,42 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
+# This file is auto-generated, don't edit it. Thanks.
 from Tea.model import TeaModel
 
 
 class RuntimeOptions(TeaModel):
-    def __init__(
-            self,
-            autoretry=None,
-            ignore_ssl=None,
-            max_attempts=None,
-            backoff_policy=None,
-            backoff_period=None,
-            read_timeout=None,
-            connect_timeout=None,
-            http_proxy=None,
-            https_proxy=None,
-            no_proxy=None,
-            max_idle_conns=None,
-            socks_5proxy=None,
-            socks_5net_work=None,
-            verify=None,
-    ):
-        self.autoretry = autoretry
-        self.ignore_ssl = ignore_ssl
-        self.max_attempts = max_attempts
-        self.backoff_policy = backoff_policy
-        self.backoff_period = backoff_period
-        self.read_timeout = read_timeout
-        self.connect_timeout = connect_timeout
-        self.http_proxy = http_proxy
-        self.https_proxy = https_proxy
-        self.no_proxy = no_proxy
-        self.max_idle_conns = max_idle_conns
-        self.socks_5proxy = socks_5proxy
-        self.socks_5net_work = socks_5net_work
-        self.verify = verify
-        # response_headers type is a list
-        self.response_headers = None
+    def __init__(self, autoretry=None, ignore_ssl=None, max_attempts=None, backoff_policy=None, backoff_period=None,
+                 read_timeout=None, connect_timeout=None, http_proxy=None, https_proxy=None, no_proxy=None, max_idle_conns=None,
+                 socks_5proxy=None, socks_5net_work=None, verify=None, response_headers=None):
+        # 是否自动重试
+        self.autoretry = autoretry  # type: bool
+        # 是否忽略SSL认证
+        self.ignore_ssl = ignore_ssl  # type: bool
+        # 最大重试次数
+        self.max_attempts = max_attempts  # type: int
+        # 回退策略
+        self.backoff_policy = backoff_policy  # type: str
+        # 回退周期
+        self.backoff_period = backoff_period  # type: int
+        # 读取超时时间
+        self.read_timeout = read_timeout  # type: int
+        # 连接超时时间
+        self.connect_timeout = connect_timeout  # type: int
+        # http代理
+        self.http_proxy = http_proxy  # type: str
+        # https代理
+        self.https_proxy = https_proxy  # type: str
+        # 无代理
+        self.no_proxy = no_proxy  # type: str
+        # 最大闲置连接数
+        self.max_idle_conns = max_idle_conns  # type: int
+        # socks5代理
+        self.socks_5proxy = socks_5proxy  # type: str
+        # socks5代理协议
+        self.socks_5net_work = socks_5net_work  # type: str
+        # 校验
+        self.verify = verify  # type: str
+        # 响应头
+        self.response_headers = response_headers  # type: list[str]
 
     def validate(self):
         pass
@@ -74,6 +75,8 @@ class RuntimeOptions(TeaModel):
             result['socks5NetWork'] = self.socks_5net_work
         if self.verify is not None:
             result['verify'] = self.verify
+        if self.response_headers is not None:
+            result['responseHeaders'] = self.response_headers
         return result
 
     def from_map(self, m=None):
@@ -106,21 +109,17 @@ class RuntimeOptions(TeaModel):
             self.socks_5net_work = m.get('socks5NetWork')
         if m.get('verify') is not None:
             self.verify = m.get('verify')
+        if m.get('responseHeaders') is not None:
+            self.response_headers = m.get('responseHeaders')
         return self
 
 
 class ErrorResponse(TeaModel):
-    def __init__(
-            self,
-            status_code=None,
-            error_code=None,
-            error_message=None,
-            request_id=None,
-    ):
-        self.status_code = status_code
-        self.error_code = error_code
-        self.error_message = error_message
-        self.request_id = request_id
+    def __init__(self, status_code=None, error_code=None, error_message=None, request_id=None):
+        self.status_code = status_code  # type: str
+        self.error_code = error_code  # type: str
+        self.error_message = error_message  # type: str
+        self.request_id = request_id  # type: str
 
     def validate(self):
         self.validate_required(self.status_code, 'status_code')
@@ -155,3 +154,5 @@ class ErrorResponse(TeaModel):
         if m.get('RequestId') is not None:
             self.request_id = m.get('RequestId')
         return self
+
+

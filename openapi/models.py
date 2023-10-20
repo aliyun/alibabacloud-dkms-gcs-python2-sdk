@@ -1,56 +1,62 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
+# This file is auto-generated, don't edit it. Thanks.
 from Tea.model import TeaModel
+
+from openapi_credential.client import Client as DedicatedKmsOpenapiCredentialClient
 
 
 class Config(TeaModel):
-    def __init__(
-            self,
-            access_key_id=None,
-            private_key=None,
-            endpoint=None,
-            protocol=None,
-            region_id=None,
-            read_timeout=None,
-            connect_timeout=None,
-            http_proxy=None,
-            https_proxy=None,
-            socks_5proxy=None,
-            socks_5net_work=None,
-            no_proxy=None,
-            max_idle_conns=None,
-            user_agent=None,
-            type=None,
-            credential=None,
-            client_key_file=None,
-            client_key_content=None,
-            password=None,
-    ):
-        self.access_key_id = access_key_id
-        # pkcs1 or pkcs8 PEM format private key
-        self.private_key = private_key
-        # crypto service address
-        self.endpoint = endpoint
-        self.protocol = protocol
-        self.region_id = region_id
-        self.read_timeout = read_timeout
-        self.connect_timeout = connect_timeout
-        self.http_proxy = http_proxy
-        self.https_proxy = https_proxy
-        self.socks_5proxy = socks_5proxy
-        self.socks_5net_work = socks_5net_work
-        self.no_proxy = no_proxy
-        self.max_idle_conns = max_idle_conns
-        self.user_agent = user_agent
-        self.type = type
-        self.credential = credential
-        self.client_key_file = client_key_file
-        # client key content
-        self.client_key_content = client_key_content
-        self.password = password
+    def __init__(self, access_key_id=None, private_key=None, endpoint=None, protocol=None, region_id=None,
+                 read_timeout=None, connect_timeout=None, http_proxy=None, https_proxy=None, no_proxy=None, max_idle_conns=None,
+                 socks_5proxy=None, socks_5net_work=None, type=None, user_agent=None, credential=None, client_key_file=None,
+                 client_key_content=None, password=None, ca_file_path=None, ignore_ssl=None):
+        # 访问凭证ID
+        self.access_key_id = access_key_id  # type: str
+        # pkcs1 或 pkcs8 PEM 格式私钥
+        self.private_key = private_key  # type: str
+        # 实例地址
+        self.endpoint = endpoint  # type: str
+        # 协议
+        self.protocol = protocol  # type: str
+        # 区域标识
+        self.region_id = region_id  # type: str
+        # 读取超时时间
+        self.read_timeout = read_timeout  # type: int
+        # 连接超时时间
+        self.connect_timeout = connect_timeout  # type: int
+        # http代理
+        self.http_proxy = http_proxy  # type: str
+        # https代理
+        self.https_proxy = https_proxy  # type: str
+        # 无代理
+        self.no_proxy = no_proxy  # type: str
+        # 最大闲置连接数
+        self.max_idle_conns = max_idle_conns  # type: int
+        # socks5代理
+        self.socks_5proxy = socks_5proxy  # type: str
+        # socks5代理协议
+        self.socks_5net_work = socks_5net_work  # type: str
+        # 访问凭证类型
+        self.type = type  # type: str
+        # 用户代理
+        self.user_agent = user_agent  # type: str
+        # 访问凭证
+        self.credential = credential  # type: DedicatedKmsOpenapiCredentialClient
+        # ClientKey文件路径
+        self.client_key_file = client_key_file  # type: str
+        # ClientKey文件内容
+        self.client_key_content = client_key_content  # type: str
+        # ClientKey密码
+        self.password = password  # type: str
+        # ca证书文件路径
+        self.ca_file_path = ca_file_path  # type: str
+        # 是否忽略SSL认证
+        self.ignore_ssl = ignore_ssl  # type: bool
 
     def validate(self):
         if self.region_id is not None:
             self.validate_pattern(self.region_id, 'region_id', '[a-zA-Z0-9-_]+')
+        self.validate_required(self.type, 'type')
 
     def to_map(self):
         _map = super(Config, self).to_map()
@@ -76,18 +82,18 @@ class Config(TeaModel):
             result['httpProxy'] = self.http_proxy
         if self.https_proxy is not None:
             result['httpsProxy'] = self.https_proxy
-        if self.socks_5proxy is not None:
-            result['socks5Proxy'] = self.socks_5proxy
-        if self.socks_5net_work is not None:
-            result['socks5NetWork'] = self.socks_5net_work
         if self.no_proxy is not None:
             result['noProxy'] = self.no_proxy
         if self.max_idle_conns is not None:
             result['maxIdleConns'] = self.max_idle_conns
-        if self.user_agent is not None:
-            result['userAgent'] = self.user_agent
+        if self.socks_5proxy is not None:
+            result['socks5Proxy'] = self.socks_5proxy
+        if self.socks_5net_work is not None:
+            result['socks5NetWork'] = self.socks_5net_work
         if self.type is not None:
             result['type'] = self.type
+        if self.user_agent is not None:
+            result['userAgent'] = self.user_agent
         if self.credential is not None:
             result['credential'] = self.credential
         if self.client_key_file is not None:
@@ -96,6 +102,10 @@ class Config(TeaModel):
             result['clientKeyContent'] = self.client_key_content
         if self.password is not None:
             result['password'] = self.password
+        if self.ca_file_path is not None:
+            result['caFilePath'] = self.ca_file_path
+        if self.ignore_ssl is not None:
+            result['ignoreSSL'] = self.ignore_ssl
         return result
 
     def from_map(self, m=None):
@@ -118,18 +128,18 @@ class Config(TeaModel):
             self.http_proxy = m.get('httpProxy')
         if m.get('httpsProxy') is not None:
             self.https_proxy = m.get('httpsProxy')
-        if m.get('socks5Proxy') is not None:
-            self.socks_5proxy = m.get('socks5Proxy')
-        if m.get('socks5NetWork') is not None:
-            self.socks_5net_work = m.get('socks5NetWork')
         if m.get('noProxy') is not None:
             self.no_proxy = m.get('noProxy')
         if m.get('maxIdleConns') is not None:
             self.max_idle_conns = m.get('maxIdleConns')
-        if m.get('userAgent') is not None:
-            self.user_agent = m.get('userAgent')
+        if m.get('socks5Proxy') is not None:
+            self.socks_5proxy = m.get('socks5Proxy')
+        if m.get('socks5NetWork') is not None:
+            self.socks_5net_work = m.get('socks5NetWork')
         if m.get('type') is not None:
             self.type = m.get('type')
+        if m.get('userAgent') is not None:
+            self.user_agent = m.get('userAgent')
         if m.get('credential') is not None:
             self.credential = m.get('credential')
         if m.get('clientKeyFile') is not None:
@@ -138,11 +148,10 @@ class Config(TeaModel):
             self.client_key_content = m.get('clientKeyContent')
         if m.get('password') is not None:
             self.password = m.get('password')
+        if m.get('caFilePath') is not None:
+            self.ca_file_path = m.get('caFilePath')
+        if m.get('ignoreSSL') is not None:
+            self.ignore_ssl = m.get('ignoreSSL')
         return self
 
 
-class ResponseEntity(object):
-
-    def __init__(self, body_bytes, response_headers):
-        self.body_bytes = body_bytes
-        self.response_headers = response_headers
