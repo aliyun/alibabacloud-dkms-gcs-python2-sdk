@@ -17,7 +17,7 @@ DESCRIPTION = "AlibabaCloud DKMS-GCS SDK for Python2"
 AUTHOR = "Alibaba Cloud SDK"
 AUTHOR_EMAIL = "sdk-team@alibabacloud.com"
 URL = "https://github.com/aliyun/alibabacloud-dkms-gcs-python2-sdk"
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 REQUIRES = [
     "alibabacloud_openapi_util_py2>=0.1.1",
     "protobuf>=3.12.0,<=3.17.0",

@@ -168,14 +168,8 @@ class Client(object):
                     'responseHeaders': response_headers
                 }
             except Exception as e:
-                import traceback, datetime
-                timestamp = "timestamp:{},".format(datetime.datetime.now())
-                retry_times = " retry times:{},".format(_retry_times)
-                print(timestamp + retry_times + traceback.format_exc())
-                if TeaCore.is_retryable(e) or DedicatedKmsOpenapiUtilClient.is_retry_err(e):
-                    print(timestamp + retry_times + " continue")
+                if DedicatedKmsOpenapiUtilClient.is_retry_err(e):
                     _last_exception = e
                     continue
-                print(timestamp + retry_times + "no continue")
                 raise e
         raise UnretryableException(_last_request, _last_exception)
