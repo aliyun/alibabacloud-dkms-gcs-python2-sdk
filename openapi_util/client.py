@@ -8,7 +8,7 @@ from alibabacloud_tea_util.client import Client as UtilClient
 from alibabacloud_darabonba_map.client import Client as MapClient
 from alibabacloud_darabonba_array.client import Client as ArrayClient
 from alibabacloud_darabonba_string.client import Client as StringClient
-
+from Tea.vendored.requests.packages.urllib3.exceptions import ProtocolError
 from openapi_util.protobuf import api_pb2
 from OpenSSL import crypto
 from Tea.exceptions import TeaException
@@ -113,16 +113,10 @@ class Client(object):
 
     @staticmethod
     def is_retry_err(err):
-        print("e.message:", type(err.message), err.message)
-        if isinstance(err, ConnectionError):
-            if isinstance(err.message, str) and "Connection reset by peer" in err.message:
-                # and (
-                #    err.message.contains("Connection reset by peer")
-                # or err.message.contains("Transport endpoint is not connected")
-                # or err.message.contains("Name or service not known")
-                # ):
-                print("isinstance err:", err)
-                return True
+        if isinstance(err, ConnectionError) \
+                and isinstance(err.message, ProtocolError) \
+                and "Connection reset by peer" in str(err.message):
+            return True
         if isinstance(err, TeaException) and err.code == "Rejected.Throttling":
             return True
         return False
