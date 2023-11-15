@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 
 import time
-
+import platform
+import openapi
 from Tea.exceptions import TeaException, UnretryableException
 from Tea.request import TeaRequest
 from Tea.core import TeaCore
@@ -77,7 +78,7 @@ class Client(object):
         self._endpoint = config.endpoint
         self._protocol = config.protocol
         self._region_id = config.region_id
-        self._user_agent = config.user_agent
+        self._user_agent = config.user_agent if config.user_agent is not None else self.__get_default_agent()
         self._read_timeout = config.read_timeout
         self._connect_timeout = config.connect_timeout
         self._http_proxy = config.http_proxy
@@ -88,7 +89,14 @@ class Client(object):
         self._max_idle_conns = config.max_idle_conns
         self._ignore_ssl = config.ignore_ssl
 
-    def do_request(self, api_name, api_version, protocol, method, signature_method, req_body_bytes, runtime, request_headers):
+    @staticmethod
+    def __get_default_agent():
+        return 'AlibabaCloud (%s;%s) Python/%s %s/%s' % (
+            platform.system(), platform.machine(), platform.python_version(), "kms-gcs-python2-sdk-version",
+            openapi.__version__)
+
+    def do_request(self, api_name, api_version, protocol, method, signature_method, req_body_bytes, runtime,
+                   request_headers):
         runtime.validate()
         _runtime = {
             'timeouted': 'retry',
@@ -130,16 +138,18 @@ class Client(object):
                 _request.headers['accept'] = 'application/x-protobuf'
                 _request.headers['host'] = self._endpoint
                 _request.headers['date'] = UtilClient.get_date_utcstring()
-                _request.headers['user-agent'] = UtilClient.get_user_agent(self._user_agent)
+                _request.headers['user-agent'] = self._user_agent
                 _request.headers['x-kms-apiversion'] = api_version
                 _request.headers['x-kms-apiname'] = api_name
                 _request.headers['x-kms-signaturemethod'] = signature_method
                 _request.headers['x-kms-acccesskeyid'] = self._credential.get_access_key_id()
                 _request.headers['content-type'] = 'application/x-protobuf'
                 _request.headers['content-length'] = DedicatedKmsOpenapiUtilClient.get_content_length(req_body_bytes)
-                _request.headers['content-sha256'] = StringClient.to_upper(OpenApiUtilClient.hex_encode(OpenApiUtilClient.hash(req_body_bytes, 'ACS3-RSA-SHA256')))
+                _request.headers['content-sha256'] = StringClient.to_upper(
+                    OpenApiUtilClient.hex_encode(OpenApiUtilClient.hash(req_body_bytes, 'ACS3-RSA-SHA256')))
                 _request.body = req_body_bytes
-                str_to_sign = DedicatedKmsOpenapiUtilClient.get_string_to_sign(method, _request.pathname, _request.headers, _request.query)
+                str_to_sign = DedicatedKmsOpenapiUtilClient.get_string_to_sign(method, _request.pathname,
+                                                                               _request.headers, _request.query)
                 _request.headers['authorization'] = self._credential.get_signature(str_to_sign)
                 _last_request = _request
                 _response = TeaCore.do_action(_request, _runtime)
