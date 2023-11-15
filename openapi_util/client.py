@@ -2,6 +2,8 @@
 # This file is auto-generated, don't edit it. Thanks.
 from __future__ import unicode_literals
 
+import platform
+
 from Tea.converter import TeaConverter
 
 from alibabacloud_tea_util.client import Client as UtilClient
@@ -9,6 +11,8 @@ from alibabacloud_darabonba_map.client import Client as MapClient
 from alibabacloud_darabonba_array.client import Client as ArrayClient
 from alibabacloud_darabonba_string.client import Client as StringClient
 from Tea.vendored.requests.packages.urllib3.exceptions import ProtocolError
+
+import openapi_util
 from openapi_util.protobuf import api_pb2
 from OpenSSL import crypto
 from Tea.exceptions import TeaException
@@ -120,6 +124,17 @@ class Client(object):
         if isinstance(err, TeaException) and err.code == "Rejected.Throttling":
             return True
         return False
+
+    @staticmethod
+    def get_user_agent(user_agent):
+        if user_agent is not None:
+            return 'AlibabaCloud (%s;%s) Python/%s %s %s/%s' % (
+                platform.system(), platform.machine(), platform.python_version(), user_agent,
+                "kms-gcs-python2-sdk-version",
+                openapi_util.__version__)
+        return 'AlibabaCloud (%s;%s) Python/%s %s/%s' % (
+            platform.system(), platform.machine(), platform.python_version(), "kms-gcs-python2-sdk-version",
+            openapi_util.__version__)
 
     @staticmethod
     def parse_encrypt_response(res_body):
