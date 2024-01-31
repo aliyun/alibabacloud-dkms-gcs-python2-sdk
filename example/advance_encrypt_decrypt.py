@@ -17,12 +17,8 @@ client = Client(config)
 class AdvanceEncryptContext(object):
     """The advance encrypt context may be stored."""
 
-    def __init__(self, key_id, ciphertext_blob, iv, algorithm):
-        self.key_id = key_id
+    def __init__(self, ciphertext_blob):
         self.ciphertext_blob = ciphertext_blob
-        self.iv = iv
-        # Use default algorithm value,if the value is not set.
-        self.algorithm = algorithm
 
 
 def advance_encrypt(key_id, plaintext):
@@ -36,15 +32,12 @@ def advance_encrypt(key_id, plaintext):
     runtime_options.verify = "<your-ca-certificate-file-path>"
     resp = client.advance_encrypt_with_options(request, runtime_options)
     print(resp)
-    return AdvanceEncryptContext(resp.key_id, resp.ciphertext_blob, resp.iv, resp.algorithm)
+    return AdvanceEncryptContext(resp.ciphertext_blob)
 
 
 def advance_decrypt(context):
     request = AdvanceDecryptRequest()
     request.ciphertext_blob = context.ciphertext_blob
-    request.key_id = context.key_id
-    request.iv = context.iv
-    request.algorithm = context.algorithm
     runtime_options = RuntimeOptions()
     # ignore ssl
     # runtime_options.ignore_ssl = True
